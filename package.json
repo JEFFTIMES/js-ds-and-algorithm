@@ -1,0 +1,16 @@
+{
+  "name": "ds-and-algorithm",
+  "version": "1.0.0",
+  "description": "practices of data structure and algorithms",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "data",
+    "structure",
+    "algorithm"
+  ],
+  "author": "Jefftimes <jefftimes@gmail.com> (https://jefftimes.github.io/)",
+  "license": "ISC"
+}
