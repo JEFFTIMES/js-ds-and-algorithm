@@ -1,45 +1,24 @@
 class Node {
+  
   constructor(value, left, right){
     this.value = value;
     this.left = left || undefined;
     this.right = right || undefined;
   }
 
-  add(child, side) {
-    if (child instanceof Node){
-      if (side === 'left'){
-        this.left = child;
-        return child
-      }else if(side === 'right'){
-        this.right = child;
-        return child;
-      }else{
-        throw new RangeError('the side must be either left or right.')
-      }
-    }else{
-      throw new TypeError('the child must be an instance of Node.')
+  * [Symbol.iterator]() {
+    yield this.value
+    if (this.left){
+      yield* this.left
+    }
+    if (this.right){
+      yield* this.right
     }
   }
-
-  del(child) {
-    if (child instanceof Node){
-      if (this.left === child){
-        this.left = null;
-        return child
-      }else if (this.right === child){ 
-        this.right = null;
-        return child
-      }else {
-        return null
-      }
-    }else{
-      throw new TypeError('the child must be an instance of Node.')
-    }
-  }
-
 }
 
 class Tree {
+
   constructor(){
     this.root = undefined;
     this.count = 0;
@@ -53,21 +32,21 @@ class Tree {
     // index of the root are the left sub-tree, which behind it are the right sub-tree.
     const index = middleOrder.indexOf(rootValue);
     const left = middleOrder.slice(0, index);
-    const right = middleOrder.slice(index);
+    const right = middleOrder.slice(index+1);
     
     // the base case: left.length === 0 and right.length === 0, reach the leaf node.
     if (left.length === 0 && right.length === 0){
       this.count++;
-      return new Node(rootValue, null, null);
+      return new Node(rootValue, undefined, undefined);
     }
     // the other cases: at least one of the left or right node is not a leaf node
-    preOrder.shift()
-    const leftNode = null;
-    const rightNode = null;
-    if(left.length !==0){
+    let leftNode = undefined;
+    let rightNode = undefined;
+    if(left.length !== 0){
       leftNode = this.rebuild(preOrder.slice(1, index+1), left);
       this.count++;
-    }else{
+    }
+    if(right.length !== 0){
       rightNode = this.rebuild(preOrder.slice(index+1), right); 
       this.count++; 
     }  
@@ -79,12 +58,7 @@ class Tree {
   * [Symbol.iterator](){
     // yield current node first
     if (this.root){
-      yield this.root.value;
-      if (this.root.left !== null){
-        yield* this.root.left;
-      }else if(this.root.right !== null){
-        yield* this.root.right;
-      }
+      yield* this.root;
     }else{
       yield undefined;
     }
@@ -99,7 +73,7 @@ const middle = [4,7,2,1,5,3,8,6]
 
 const tree = new Tree()
 console.log(JSON.stringify(tree))
-//const root = tree.rebuild(pre, middle)
+const root = tree.rebuild(pre, middle)
 
 const t = [...tree]
 
