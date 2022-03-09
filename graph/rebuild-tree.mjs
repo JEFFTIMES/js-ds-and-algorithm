@@ -1,18 +1,38 @@
 class Node {
-  
+
   constructor(value, left, right){
     this.value = value;
     this.left = left || undefined;
     this.right = right || undefined;
   }
 
-  * [Symbol.iterator]() {
+  *[Symbol.iterator]() {
     yield this.value
-    if (this.left){
+    if(this.left){
       yield* this.left
     }
-    if (this.right){
+    if(this.right){
       yield* this.right
+    }
+  }
+
+  * preOrder() {
+    yield this.value
+    if (this.left){
+      yield* this.left.preOrder()
+    }
+    if (this.right){
+      yield* this.right.preOrder()
+    }
+  }
+
+  * middleOrder() {
+    if(this.left){
+      yield* this.left.middleOrder();
+    }
+    yield this.value
+    if (this.right){
+      yield* this.right.middleOrder();
     }
   }
 }
@@ -34,35 +54,53 @@ class Tree {
     const left = middleOrder.slice(0, index);
     const right = middleOrder.slice(index+1);
     
-    // the base case: left.length === 0 and right.length === 0, reach the leaf node.
-    if (left.length === 0 && right.length === 0){
-      this.count++;
-      return new Node(rootValue, undefined, undefined);
-    }
-    // the other cases: at least one of the left or right node is not a leaf node
     let leftNode = undefined;
     let rightNode = undefined;
+    const rootNode = new Node(rootValue, leftNode, rightNode);
+    this.count += 1;
+
+    // the base case: left.length === 0 and right.length === 0, reach the leaf node.
+    if (left.length === 0 && right.length === 0){
+      return rootNode;
+    }
+    
+    // the other cases: at least one of the left or right node is not a leaf node
     if(left.length !== 0){
       leftNode = this.rebuild(preOrder.slice(1, index+1), left);
-      this.count++;
     }
     if(right.length !== 0){
       rightNode = this.rebuild(preOrder.slice(index+1), right); 
-      this.count++; 
     }  
-    const rootNode = new Node(rootValue, leftNode, rightNode);
+    rootNode.left = leftNode;
+    rootNode.right = rightNode;
     this.root = rootNode;
-    return rootNode
+    return this.root
   }
 
-  * [Symbol.iterator](){
-    // yield current node first
-    if (this.root){
+  * [Symbol.iterator]() { 
+    if(this.root){
       yield* this.root;
     }else{
       yield undefined;
     }
     
+  }
+
+  * preOrder(){
+    // yield current node first
+    if (this.root){
+      yield* this.root.preOrder();
+    }else{
+      yield undefined;
+    }
+  }
+
+  * middleOrder(){
+  if (this.root){
+    yield* this.root.middleOrder();
+  }else{
+    yield undefined;
+  }
   }
 }
 
@@ -74,8 +112,27 @@ const middle = [4,7,2,1,5,3,8,6]
 const tree = new Tree()
 console.log(JSON.stringify(tree))
 const root = tree.rebuild(pre, middle)
+console.log(tree.count)
+const preO = [...tree.preOrder()]
+console.log(preO)
+console.log([...tree.middleOrder()])
 
-const t = [...tree]
+console.log([...tree])
 
-console.log(t)
+function fibonacci(n) {
+  const init = [0,1,]
+  if (n < 2){
+    return init[n]
+  }
+  let fn1 = 1
+  let fn2 = 1
+  for (let i=2; i <=n; i++){
+    let fn = fn1 + fn2
+    fn2 = fn1
+    fn1 = fn
+  }
+  console.log(fn1)
+  return fn1
+}
 
+fibonacci(8)
