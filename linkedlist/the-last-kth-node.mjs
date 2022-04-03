@@ -1,5 +1,5 @@
 
-import { singleDirectionNode } from './nodes.mjs'
+import { SingleDirectionNode } from './nodes.mjs'
 
 function findLastKthNode(head, lastKth){
   // empty link list or invalid lastKth
@@ -25,11 +25,11 @@ function findLastKthNode(head, lastKth){
 }
 
 
-let next = new singleDirectionNode()
+let next = new SingleDirectionNode()
 let head = next
 next.value = 0
 for (let i=1; i<10; i++){
-  const tail = new singleDirectionNode()
+  const tail = new SingleDirectionNode()
   tail.value = i;
   next.next = tail;
   next = tail;

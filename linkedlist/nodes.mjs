@@ -1,11 +1,11 @@
-class singleDirectionNode{
+class SingleDirectionNode{
   constructor(value, next){
     this.value = value || null;
     this.next = next || undefined;
   }
 }
 
-class biDirectionNode{
+class BiDirectionNode{
   constructor(value, parent, next){
     this.value = value || null;
     this.parent = parent || undefined;
@@ -15,6 +15,6 @@ class biDirectionNode{
 
 
 export {
-  singleDirectionNode,
-  biDirectionNode
+  SingleDirectionNode,
+  BiDirectionNode
 }

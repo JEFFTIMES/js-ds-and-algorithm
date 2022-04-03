@@ -1,4 +1,4 @@
-import { singleDirectionNode } from './nodes.mjs'
+import { SingleDirectionNode } from './nodes.mjs'
 
 function findEntryNodeOfRing(head){
   let doubleSpeedPointer = head
@@ -33,11 +33,11 @@ function findEntryNodeOfRing(head){
   return pointer;
 }
 
-let head = new singleDirectionNode()
+let head = new SingleDirectionNode()
 let tail = head
 tail.value = 0
 for (let i=1; i<10; i++){
-  const newNode = new singleDirectionNode()
+  const newNode = new SingleDirectionNode()
   newNode.value = i;
   tail.next = newNode;
   tail = newNode;
